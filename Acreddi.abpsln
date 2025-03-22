@@ -1,0 +1,210 @@
+{
+  "id": "53fd94bb-3b1f-4443-a5d3-6196fd89d89e",
+  "template": "app",
+  "versions": {
+    "LeptonX": "4.1.0",
+    "AbpFramework": "9.1.0",
+    "AbpCommercial": "9.1.0",
+    "AbpStudio": "0.9.25",
+    "TargetDotnetFramework": "net9.0"
+  },
+  "modules": {
+    "Acreddi": {
+      "path": "Acreddi.abpmdl"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
+  },
+  "k8sProfiles": {
+    "local": {
+      "path": "etc/abp-studio/k8s-profiles/local.abpk8s.json"
+    }
+  },
+  "commands": {
+    "helmBuildDotnetImage": {
+      "triggerTargets": [
+        "HELM_CHARTS_ROOT",
+        "HELM_MAIN_CHART",
+        "HELM_SUB_CHART"
+      ],
+      "executionTargets": [
+        "HELM_MAIN_CHART",
+        "HELM_SUB_CHART"
+      ],
+      "displayName": "Build Docker Image(s)",
+      "workingDirectory": "etc/helm",
+      "terminalCommand": "./build-image.ps1 -ProjectPath {{metadata.projectPath}} -ImageName {{metadata.imageName}} -ProjectType {{metadata.projectType}}",
+      "condition": "{{metadata.projectPath != null && metadata.imageName != null && metadata.projectType != null}}"
+    },
+    "helmInstallChart": {
+      "triggerTargets": [
+        "HELM_CHARTS_ROOT",
+        "HELM_MAIN_CHART"
+      ],
+      "executionTargets": [
+        "HELM_MAIN_CHART"
+      ],
+      "displayName": "Install Chart(s)",
+      "workingDirectory": "etc/helm",
+      "terminalCommand": "./install.ps1 -ChartName {{chart.name}} -Namespace {{profile.namespace}} -ReleaseName {{chart.name}}-{{profile.name}} -DotnetEnvironment {{metadata.dotnetEnvironment}} {{~if metadata.k8ssuffix}} -User {{metadata.k8ssuffix}}{{end}}",
+      "requireConfirmation": "true",
+      "confirmationText": "Are you sure to install the chart(s) for the profile {{ profile.name }}?"
+    },
+    "helmUninstallChart": {
+      "triggerTargets": [
+        "HELM_CHARTS_ROOT",
+        "HELM_MAIN_CHART"
+      ],
+      "executionTargets": [
+        "HELM_MAIN_CHART"
+      ],
+      "displayName": "Uninstall Chart(s)",
+      "workingDirectory": "etc/helm",
+      "terminalCommand": "./uninstall.ps1 -Namespace {{profile.namespace}} -ReleaseName {{chart.name}}-{{profile.name}} {{~if metadata.k8ssuffix}} -User {{metadata.k8ssuffix}}{{end}}",
+      "requireConfirmation": "true",
+      "confirmationText": "Are you sure to uninstall the chart(s) for the profile {{profile.name}}?"
+    },
+    "kubernetesRedeploy": {
+      "triggerTargets": [
+        "KUBERNETES_SERVICE"
+      ],
+      "executionTargets": [
+        "KUBERNETES_SERVICE"
+      ],
+      "displayName": "Redeploy",
+      "workingDirectory": "etc/helm",
+      "terminalCommand": "./build-image.ps1 -ProjectPath {{chart.metadata.projectPath}} -ImageName {{chart.metadata.imageName}} -ProjectType {{chart.metadata.projectType}} &&& ./install.ps1 -ChartName {{mainChart.name}} -Namespace {{profile.namespace}} -ReleaseName {{mainChart.name}}-{{profile.name}} -DotnetEnvironment {{mainChart.metadata.dotnetEnvironment}} {{~if metadata.k8ssuffix}} -User {{metadata.k8ssuffix}}{{end}}",
+      "requireConfirmation": "true",
+      "confirmationText": "Are you sure to redeploy the related chart '{{chart.name}}' for the service '{{name}}'?",
+      "condition": "{{chart != null && chart.metadata.projectPath != null && chart.metadata.imageName != null && chart.metadata.projectType != null}}"
+    },
+    "createTlsSecret": {
+      "triggerTargets": [
+        "HELM_CHARTS_ROOT"
+      ],
+      "executionTargets": [
+        "HELM_CHARTS_ROOT"
+      ],
+      "displayName": "Create Self-Signed TLS secret",
+      "workingDirectory": "etc/helm",
+      "terminalCommand": "./create-tls-secrets.ps1 -Namespace {{profile.namespace}} {{~if metadata.k8ssuffix}} -User {{metadata.k8ssuffix}}{{end}}"
+    }
+  },
+  "helm": {
+    "charts": {
+      "acreddi": {
+        "name": "acreddi",
+        "path": "etc/helm/acreddi",
+        "charts": {
+          "authserver": {
+            "name": "authserver",
+            "path": "etc/helm/acreddi/charts/authserver",
+            "metadata": {
+              "projectPath": "../../src/Acreddi.AuthServer/Acreddi.AuthServer.csproj",
+              "imageName": "acreddi/authserver",
+              "projectType": "dotnet"
+            },
+            "services": [
+              ".*-authserver"
+            ]
+          },
+          "dbmigrator": {
+            "name": "dbmigrator",
+            "path": "etc/helm/acreddi/charts/dbmigrator",
+            "metadata": {
+              "projectPath": "../../src/Acreddi.DbMigrator/Acreddi.DbMigrator.csproj",
+              "imageName": "acreddi/dbmigrator",
+              "projectType": "dotnet"
+            },
+            "services": [
+              ".*-dbmigrator"
+            ]
+          },
+          "httpapihost": {
+            "name": "httpapihost",
+            "path": "etc/helm/acreddi/charts/httpapihost",
+            "metadata": {
+              "projectPath": "../../src/Acreddi.HttpApi.Host/Acreddi.HttpApi.Host.csproj",
+              "imageName": "acreddi/httpapihost",
+              "projectType": "dotnet"
+            },
+            "services": [
+              ".*-httpapihost"
+            ]
+          },
+          "rabbitmq": {
+            "name": "rabbitmq",
+            "path": "etc/helm/acreddi/charts/rabbitmq"
+          },
+          "redis": {
+            "name": "redis",
+            "path": "etc/helm/acreddi/charts/redis"
+          },
+          "sqlserver": {
+            "name": "sqlserver",
+            "path": "etc/helm/acreddi/charts/sqlserver"
+          },
+          "web": {
+            "name": "web",
+            "path": "etc/helm/acreddi/charts/web",
+            "metadata": {
+              "projectPath": "../../src/Acreddi.Web/Acreddi.Web.csproj",
+              "imageName": "acreddi/web",
+              "projectType": "dotnet"
+            },
+            "services": [
+              ".*-web"
+            ]
+          },
+          "webpublic": {
+            "name": "webpublic",
+            "path": "etc/helm/acreddi/charts/webpublic",
+            "metadata": {
+              "projectPath": "../../src/Acreddi.Web.Public/Acreddi.Web.Public.csproj",
+              "imageName": "acreddi/webpublic",
+              "projectType": "dotnet"
+            },
+            "services": [
+              ".*-webpublic"
+            ]
+          },
+        },
+        "metadata": {}
+      }
+    }
+  },
+  "options": {
+    "httpRequests": {
+      "ignoredUrls": [
+      
+      ]
+    }
+  },
+  "creatingStudioConfiguration": {
+    "template": "app",
+    "createdAbpStudioVersion": "0.9.25",
+    "tiered": "true",
+    "runInstallLibs": "true",
+    "useLocalReferences": "false",
+    "multiTenancy": "true",
+    "includeTests": "true",
+    "kubernetesConfiguration": "true",
+    "uiFramework": "mvc",
+    "mobileFramework": "maui",
+    "distributedEventBus": "rabbitmq",
+    "databaseProvider": "ef",
+    "runDbMigrator": "true",
+    "databaseManagementSystem": "sqlserver",
+    "separateTenantSchema": "false",
+    "createInitialMigration": "true",
+    "theme": "leptonx",
+    "themeStyle": "system",
+    "mobileFramework": "maui",
+    "publicWebsite": "true",
+    "optionalModules": "GDPR FileManagement TextTemplateManagement LanguageManagement AuditLogging Chat OpenIddictAdmin",
+    "socialLogin": ""
+  }
+}

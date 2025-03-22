@@ -1,0 +1,181 @@
+version: '3.8'
+
+services:
+  acreddi-web:
+    image: acreddi-web:latest
+    container_name: acreddi-web
+    hostname: acreddi-web
+    build:
+      context: ../../
+      dockerfile: src/Acreddi.Web/Dockerfile.local
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80;
+      - Kestrel__Certificates__Default__Path=/root/certificate/localhost.pfx
+      - Kestrel__Certificates__Default__Password=644e85e3-9dcc-4555-8557-7da0869d92f0
+      - App__SelfUrl=https://localhost:44353
+      - AuthServer__RequireHttpsMetadata=false
+      - AuthServer__IsOnK8s=true
+      - AuthServer__Authority=https://localhost:44368/
+      - RemoteServices__Default__BaseUrl=http://acreddi-api
+      - RemoteServices__AbpAccountPublic__BaseUrl=http://acreddi-authserver      
+      - AuthServer__MetaAddress=http://acreddi-authserver
+      - Redis__Configuration=redis
+    ports:
+      - "44353:443"
+    depends_on:
+      - acreddi-api
+    restart: on-failure
+    volumes:
+      - ./certs:/root/certificate
+    networks:
+      - abp-network
+
+  acreddi-api:
+    image: acreddi-api:latest
+    container_name: acreddi-api
+    hostname: acreddi-api
+    build:
+      context: ../../
+      dockerfile: src/Acreddi.HttpApi.Host/Dockerfile.local
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80;
+      - Kestrel__Certificates__Default__Path=/root/certificate/localhost.pfx
+      - Kestrel__Certificates__Default__Password=644e85e3-9dcc-4555-8557-7da0869d92f0
+      - App__SelfUrl=https://localhost:44370
+      - App__HealthCheckUrl=http://acreddi-api/health-status
+      - AuthServer__RequireHttpsMetadata=false
+      - AuthServer__Authority=http://acreddi-authserver
+      - AuthServer__MetaAddress=https://localhost:44368
+      - App__MVCPublicUrl=https://localhost:44308
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=Acreddi;User Id=sa;Password=myPassw0rd;MultipleActiveResultSets=true;TrustServerCertificate=True;
+      - Redis__Configuration=redis
+    ports:
+      - "44354:443"    
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - ./certs:/root/certificate
+    networks:
+      - abp-network
+  
+  acreddi-authserver:
+    image: acreddi-authserver:latest
+    container_name: acreddi-authserver
+    build:
+      context: ../../
+      dockerfile: src/Acreddi.AuthServer/Dockerfile.local
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80;
+      - App__SelfUrl=https://localhost:44368
+      - App__CorsOrigins=https://localhost:44353,https://localhost:44370
+      - App__RedirectAllowedUrls=https://localhost:44353,https://localhost:44370
+      - AuthServer__RequireHttpsMetadata=false
+      - AuthServer__Authority=https://localhost:44368
+      - Kestrel__Certificates__Default__Path=/root/certificate/localhost.pfx
+      - Kestrel__Certificates__Default__Password=644e85e3-9dcc-4555-8557-7da0869d92f0
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=Acreddi;User Id=sa;Password=myPassw0rd;MultipleActiveResultSets=true;TrustServerCertificate=True;
+      - Redis__Configuration=redis
+    ports:
+      - "44334:443"
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - ./certs:/root/certificate
+    networks:
+      - abp-network
+
+  acreddi-web-public:
+    image: acreddi-web-public:latest
+    container_name: acreddi-web-public
+    build:
+      context: ../../
+      dockerfile: src/Acreddi.Web.Public/Dockerfile.local
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80;
+      - Kestrel__Certificates__Default__Path=/root/certificate/localhost.pfx
+      - Kestrel__Certificates__Default__Password=644e85e3-9dcc-4555-8557-7da0869d92f0
+      - App__SelfUrl=https://localhost:44308
+      - AuthServer__RequireHttpsMetadata=false
+      - AuthServer__IsOnK8s=true
+      - AuthServer__Authority=https://localhost:44368/
+      - RemoteServices__Default__BaseUrl=http://acreddi-api         
+      - AuthServer__MetaAddress=http://acreddi-authserver
+      - RemoteServices__AbpAccountPublic__BaseUrl=http://acreddi-authserver
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=Acreddi;User Id=sa;Password=myPassw0rd;MultipleActiveResultSets=true;TrustServerCertificate=True;
+      - Redis__Configuration=redis
+    ports:
+      - "44306:443"
+    depends_on:
+      sql-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - ./certs:/root/certificate
+    networks:
+      - abp-network  
+  
+  db-migrator:
+    image: acreddi-db-migrator:latest
+    container_name: db-migrator
+    build:
+      context: ../../
+      dockerfile: src/Acreddi.DbMigrator/Dockerfile.local
+    environment:
+      - OpenIddict__Applications__Acreddi_Web__RootUrl=https://localhost:44353
+      - OpenIddict__Applications__Acreddi_Swagger__RootUrl=https://localhost:44370      
+      - OpenIddict__Applications__Acreddi_Web_Public_Tiered__RootUrl=https://localhost:44308
+      - OpenIddict__Applications__Acreddi_Web_Public__RootUrl=https://localhost:44386
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=Acreddi;User Id=sa;Password=myPassw0rd;MultipleActiveResultSets=true;TrustServerCertificate=True;
+      - Redis__Configuration=redis
+    restart: on-failure
+    depends_on:
+      sql-server:
+        condition: service_healthy
+    networks:
+      - abp-network
+  
+  sql-server:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1434:1433"
+    environment:
+      SA_PASSWORD: "myPassw0rd"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - abp-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S sql-server -U sa -P "myPassw0rd" -Q "SELECT 1" -C -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - abp-network
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+
+volumes:
+  sqldata:
+    name: acreddi_sqldata
+networks:
+  abp-network:
+    name: acreddi-network
+    driver: bridge

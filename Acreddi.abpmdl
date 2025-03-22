@@ -1,0 +1,145 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXTheme": {
+      "version": "4.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.TextTemplateManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Chat": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.LanguageManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.FileManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict.Pro": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.Gdpr": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.AuditLogging.Pro": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.CmsKit.Pro": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Saas": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity.Pro": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account.Pro": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.1.0",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Acreddi.Application": {
+      "path": "src/Acreddi.Application/Acreddi.Application.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Application.Tests": {
+      "path": "test/Acreddi.Application.Tests/Acreddi.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acreddi.Domain.Shared": {
+      "path": "src/Acreddi.Domain.Shared/Acreddi.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Application.Contracts": {
+      "path": "src/Acreddi.Application.Contracts/Acreddi.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.HttpApi": {
+      "path": "src/Acreddi.HttpApi/Acreddi.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.HttpApi.Client": {
+      "path": "src/Acreddi.HttpApi.Client/Acreddi.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Web": {
+      "path": "src/Acreddi.Web/Acreddi.Web.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.AuthServer": {
+      "path": "src/Acreddi.AuthServer/Acreddi.AuthServer.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.HttpApi.Host": {
+    "path": "src/Acreddi.HttpApi.Host/Acreddi.HttpApi.Host.abppkg",
+    "folder": "src"
+    },
+    "Acreddi.EntityFrameworkCore.Tests": {
+      "path": "test/Acreddi.EntityFrameworkCore.Tests/Acreddi.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acreddi.EntityFrameworkCore": {
+      "path": "src/Acreddi.EntityFrameworkCore/Acreddi.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.TestBase": {
+      "path": "test/Acreddi.TestBase/Acreddi.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Acreddi.Domain.Tests": {
+      "path": "test/Acreddi.Domain.Tests/Acreddi.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acreddi.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Acreddi.HttpApi.Client.ConsoleTestApp/Acreddi.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Acreddi.DbMigrator": {
+      "path": "src/Acreddi.DbMigrator/Acreddi.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Web.Public": {
+      "path": "src/Acreddi.Web.Public/Acreddi.Web.Public.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Maui": {
+      "path": "src/Acreddi.Maui/Acreddi.Maui.abppkg",
+      "folder": "src"
+    },
+    "Acreddi.Domain": {
+      "path": "src/Acreddi.Domain/Acreddi.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}
