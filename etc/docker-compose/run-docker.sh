@@ -6,7 +6,7 @@ then
     cd certs/
     if [[ ! -f localhost.pfx ]]
     then
-        dotnet dev-certs https -v -ep localhost.pfx -p 644e85e3-9dcc-4555-8557-7da0869d92f0 -t
+        dotnet dev-certs https -v -ep localhost.pfx -p 579c6938-9a6a-4a3f-9872-d678913dc471 -t
     fi
     cd ../
 fi

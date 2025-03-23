@@ -1,7 +1,7 @@
 {
   "config": {
     "context": "docker-desktop",
-    "namespace": "acreddi-local"
+    "namespace": "accredi-local"
   },
   "metadata": {
     "dotnetEnvironment": "Staging"

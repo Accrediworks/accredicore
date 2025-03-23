@@ -1,5 +1,5 @@
 ﻿param (
-    $Namespace="acreddi-local",
+    $Namespace="accredi-local",
     $User = ""
 )
 

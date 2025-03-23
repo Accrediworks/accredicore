@@ -1,6 +1,6 @@
 param (
-	$Namespace="acreddi-local",
-    $ReleaseName="acreddi-local",
+	$Namespace="accredi-local",
+    $ReleaseName="accredi-local",
     $User = ""
 )
 

@@ -1,13 +1,13 @@
 param (
-	$ChartName="acreddi",
-	$Namespace="acreddi-local",
-	$ReleaseName="acreddi-local",
+	$ChartName="accredi",
+	$Namespace="accredi-local",
+	$ReleaseName="accredi-local",
 	$DotnetEnvironment="Staging",
     $User = ""
 )
 
 # Create values.localdev.yaml if not exists
-$localDevFilePath = Join-Path $PSScriptRoot "acreddi/values.localdev.yaml"
+$localDevFilePath = Join-Path $PSScriptRoot "accredi/values.localdev.yaml"
 if (!(Test-Path $localDevFilePath)) {
 	New-Item -ItemType File -Path $localDevFilePath | Out-Null
 }
@@ -20,4 +20,4 @@ if([string]::IsNullOrEmpty($User) -eq $false)
 }
 
 # Install (or upgrade) the Helm chart
-helm upgrade --install ${FinalReleaseName} ${ChartName} --namespace ${Namespace} --create-namespace --set global.dotnetEnvironment=${DotnetEnvironment} -f "acreddi/values.localdev.yaml" -f "$ChartName/values.${ReleaseName}.yaml"
+helm upgrade --install ${FinalReleaseName} ${ChartName} --namespace ${Namespace} --create-namespace --set global.dotnetEnvironment=${DotnetEnvironment} -f "accredi/values.localdev.yaml" -f "$ChartName/values.${ReleaseName}.yaml"

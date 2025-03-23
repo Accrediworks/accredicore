@@ -10,17 +10,17 @@
         "order": 5
       }
     },
-    "Acreddi.Maui": {
+    "Accredi.Maui": {
       "type": "dotnet-project",
-      "path": "../../../src/Acreddi.Maui/Acreddi.Maui.csproj",
+      "path": "../../../src/Accredi.Maui/Accredi.Maui.csproj",
       "execution": {
         "order": 0
       }
     },
-    "Acreddi.Web.Public": {
+    "Accredi.Web.Public": {
       "type": "dotnet-project",
-      "launchUrl": "https://localhost:44308",
-      "path": "../../../src/Acreddi.Web.Public/Acreddi.Web.Public.csproj",
+      "launchUrl": "https://localhost:44364",
+      "path": "../../../src/Accredi.Web.Public/Accredi.Web.Public.csproj",
       "kubernetesService": ".*-webpublic$",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
@@ -28,10 +28,10 @@
         "order": 1
       }
     },
-    "Acreddi.AuthServer": {
+    "Accredi.AuthServer": {
       "type": "dotnet-project",
-      "launchUrl": "https://localhost:44368",
-      "path": "../../../src/Acreddi.AuthServer/Acreddi.AuthServer.csproj",
+      "launchUrl": "https://localhost:44359",
+      "path": "../../../src/Accredi.AuthServer/Accredi.AuthServer.csproj",
       "kubernetesService": ".*-authserver$",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
@@ -39,10 +39,10 @@
         "order": 3
       }
     },
-    "Acreddi.HttpApi.Host": {
+    "Accredi.HttpApi.Host": {
       "type": "dotnet-project",
-      "launchUrl": "https://localhost:44316",
-      "path": "../../../src/Acreddi.HttpApi.Host/Acreddi.HttpApi.Host.csproj",
+      "launchUrl": "https://localhost:44319",
+      "path": "../../../src/Accredi.HttpApi.Host/Accredi.HttpApi.Host.csproj",
       "kubernetesService": ".*-httpapihost$",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
@@ -50,10 +50,10 @@
         "order": 4
       }
     },
-    "Acreddi.Web": {
+    "Accredi.Web": {
       "type": "dotnet-project",
-      "launchUrl": "https://localhost:44300",
-      "path": "../../../src/Acreddi.Web/Acreddi.Web.csproj",
+      "launchUrl": "https://localhost:44360",
+      "path": "../../../src/Accredi.Web/Accredi.Web.csproj",
       "kubernetesService": ".*-web$",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",

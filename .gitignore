@@ -254,17 +254,17 @@ paket-files/
 # ABP Studio
 **/.abpstudio/
 
-# Acreddi
-src/Acreddi.Web/Logs/*
-src/Acreddi.Web/Logs/*
-src/Acreddi.Web.Public/Logs/*
-src/Acreddi.Web.Public/Logs/*
-src/Acreddi.AuthServer/Logs/*
-src/Acreddi.HttpApi.Host/Logs/*
-src/Acreddi.HttpApi.HostWithIds/Logs/*
-src/Acreddi.DbMigrator/Logs/*
-src/Acreddi.Blazor.Server/Logs/*
-src/Acreddi.Blazor.Server.Tiered/Logs/*
+# Accredi
+src/Accredi.Web/Logs/*
+src/Accredi.Web/Logs/*
+src/Accredi.Web.Public/Logs/*
+src/Accredi.Web.Public/Logs/*
+src/Accredi.AuthServer/Logs/*
+src/Accredi.HttpApi.Host/Logs/*
+src/Accredi.HttpApi.HostWithIds/Logs/*
+src/Accredi.DbMigrator/Logs/*
+src/Accredi.Blazor.Server/Logs/*
+src/Accredi.Blazor.Server.Tiered/Logs/*
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*

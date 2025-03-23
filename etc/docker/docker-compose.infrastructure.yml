@@ -1,9 +1,9 @@
 version: '3.7'
   
 volumes:
-  acreddi_rabbitmq:
+  accredi_rabbitmq:
 networks:
-  acreddi:
+  accredi:
     external: true
 
 services:
@@ -11,9 +11,9 @@ services:
     container_name: rabbitmq
     image: rabbitmq:3.12.7-management-alpine
     volumes:
-      - acreddi_rabbitmq:/var/lib/rabbitmq
+      - accredi_rabbitmq:/var/lib/rabbitmq
     networks:
-      - acreddi
+      - accredi
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -21,6 +21,6 @@ services:
     container_name: redis
     image: redis:7.2.2-alpine
     networks:
-      - acreddi
+      - accredi
     ports:
       - "6379:6379"

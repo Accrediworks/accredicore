@@ -1,4 +1,4 @@
-﻿# Acreddi
+﻿# Accredi
 
 ## About this solution
 
@@ -14,13 +14,13 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
 
 The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
 
-* Check the `ConnectionStrings` in `appsettings.json` files under the `Acreddi.AuthServer`, `Acreddi.HttpApi.Host` and `Acreddi.DbMigrator` projects and change it if you need.
-* Check the `ConnectionStrings` in `appsettings.json` files under the `Acreddi.Web.Public` as well.
+* Check the `ConnectionStrings` in `appsettings.json` files under the `Accredi.AuthServer`, `Accredi.HttpApi.Host` and `Accredi.DbMigrator` projects and change it if you need.
+* Check the `ConnectionStrings` in `appsettings.json` files under the `Accredi.Web.Public` as well.
 
 ### Before running the application
 
 * Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `Acreddi.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+* Run `Accredi.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
 
 #### Generating a Signing Certificate
 
@@ -29,10 +29,10 @@ In the production environment, you need to use a production signing certificate.
 To generate a signing certificate, you can use the following command:
 
 ```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p 267c122c-03ff-46c3-8e45-63155a93ea6c
+dotnet dev-certs https -v -ep openiddict.pfx -p eb7362fc-8297-4d36-8a28-dfb4c5ec7e77
 ```
 
-> `267c122c-03ff-46c3-8e45-63155a93ea6c` is the password of the certificate, you can change it to any password you want.
+> `eb7362fc-8297-4d36-8a28-dfb4c5ec7e77` is the password of the certificate, you can change it to any password you want.
 
 It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
 
@@ -44,11 +44,11 @@ For more information, please refer to: [OpenIddict Certificate Configuration](ht
 
 This is a layered monolith application that consists of the following applications:
 
-* `Acreddi.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-* `Acreddi.AuthServer`: ASP.NET Core MVC / Razor Pages application that is integrated OAuth 2.0(`OpenIddict`) and account modules. It is used to authenticate users and issue tokens.
-* `Acreddi.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
-* `Acreddi.Web`: ASP.NET Core MVC / Razor Pages application that is the essential web application of the solution.
-* `Acreddi.Web.Public`: ASP.NET Core MVC / Razor Pages application that is the public web application of the solution.
+* `Accredi.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
+* `Accredi.AuthServer`: ASP.NET Core MVC / Razor Pages application that is integrated OAuth 2.0(`OpenIddict`) and account modules. It is used to authenticate users and issue tokens.
+* `Accredi.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
+* `Accredi.Web`: ASP.NET Core MVC / Razor Pages application that is the essential web application of the solution.
+* `Accredi.Web.Public`: ASP.NET Core MVC / Razor Pages application that is the public web application of the solution.
 
 ### Running the MAUI Mobile Application
 
@@ -63,7 +63,7 @@ Since your MAUI mobile application runs in a different environment, you should s
 For that purpose, you can open a command line terminal and run the following `adb reverse` command to expose the host application's port on your Android device:
 
 ```bash
-adb reverse tcp:44368 tcp:44368
+adb reverse tcp:44359 tcp:44359
 ```
 
 ## Deploying the application

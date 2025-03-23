@@ -1,4 +1,0 @@
-image:
-  repository: "acreddi/httpapihost"
-  tag: "latest"
-  pullPolicy: IfNotPresent

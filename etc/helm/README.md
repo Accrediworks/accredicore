@@ -47,16 +47,16 @@ Run `install.ps1` to install or upgrade the helm charts to the Kubernetes cluste
 Ensure that the following entries are added to the `C:\Windows\System32\drivers\etc\hosts` file:
 
 ```
-127.0.0.1 acreddi-local-web
-127.0.0.1 acreddi-local-webgateway
-127.0.0.1 acreddi-local-authserver
+127.0.0.1 accredi-local-web
+127.0.0.1 accredi-local-webgateway
+127.0.0.1 accredi-local-authserver
 ```
 
 > Note that ABP Studio automatically adds these entries to your `hosts` file when you *Connect* to your Kubernetes cluster using ABP Studio's Kubernetes integration.
 
 ## Browse
 
-Now, you can browse the URL: `https://acreddi-local-web`
+Now, you can browse the URL: `https://accredi-local-web`
 
 ## Uninstall Charts
 

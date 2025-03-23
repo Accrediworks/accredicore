@@ -1,6 +1,0 @@
-image:
-  repository: "acreddi/web"
-  tag: "latest"
-  pullPolicy: IfNotPresent
-authServer:
-  clientSecret: "1q2w3e*"

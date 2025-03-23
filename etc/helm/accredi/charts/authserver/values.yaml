@@ -1,0 +1,4 @@
+image:
+  repository: "accredi/authserver"
+  tag: "latest"
+  pullPolicy: IfNotPresent
