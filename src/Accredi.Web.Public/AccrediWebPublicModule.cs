@@ -309,7 +309,7 @@ public class AccrediWebPublicModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Accredi");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var redis = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Accredi-Protection-Keys");
         }
     }
@@ -325,7 +325,7 @@ public class AccrediWebPublicModule : AbpModule
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var connection = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
         });
     }

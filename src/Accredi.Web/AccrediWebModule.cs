@@ -16,6 +16,7 @@ using Accredi.MultiTenancy;
 using Accredi.Permissions;
 using Accredi.Web.Menus;
 using Accredi.Web.HealthChecks;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
@@ -24,8 +25,6 @@ using Volo.Abp;
 using Volo.Abp.Studio;
 using Volo.Abp.AspNetCore.Mvc.Client;
 using Volo.Abp.AspNetCore.Mvc.Localization;
-using Volo.Abp.AspNetCore.Mvc.UI;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
@@ -39,12 +38,13 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Caching;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.SettingManagement.Web;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial;
 using Volo.Abp.Account.Admin.Web;
 using Volo.Abp.Account.LinkUsers;
 using Volo.Abp.Account.Pro.Public.Web.Shared;
 using Volo.Abp.Account.Public.Web.Impersonation;
 using Volo.Abp.AuditLogging.Web;
+using Volo.Abp.AzureServiceBus;
+using Volo.Abp.EventBus.Azure;
 using Volo.Abp.Gdpr.Web;
 using Volo.Abp.Gdpr.Web.Extensions;
 using Volo.Abp.LanguageManagement;
@@ -60,14 +60,11 @@ using Volo.Abp.Identity.Web;
 using Volo.Abp.Http.Client.Web;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.PermissionManagement.Web;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
-using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Studio.Client.AspNetCore;
 
 namespace Accredi.Web;
@@ -99,12 +96,12 @@ namespace Accredi.Web;
     typeof(CmsKitProAdminWebModule),
     typeof(ChatWebModule),
     typeof(ChatSignalRModule),
-    typeof(AbpEventBusRabbitMqModule),
+    typeof(AbpEventBusAzureModule),
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule)
-    )]
+)]
 public class AccrediWebModule : AbpModule
-{
+{    
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
         context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
@@ -129,6 +126,8 @@ public class AccrediWebModule : AbpModule
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
         }
 
+        ConfigureRedis(configuration);
+        ConfigureServiceBus(configuration);
         ConfigureBundles();
         ConfigureHealthChecks(context);
         ConfigureCookieConsent(context);
@@ -146,12 +145,28 @@ public class AccrediWebModule : AbpModule
         ConfigureSwaggerServices(context.Services);
         ConfigureMultiTenancy();
         ConfigureTheme();
-        
+
         Configure<RazorPagesOptions>(options =>
         {
             options.Conventions.AuthorizePage("/Books/Index", AccrediPermissions.Books.Default);
             options.Conventions.AuthorizePage("/Books/CreateModal", AccrediPermissions.Books.Create);
             options.Conventions.AuthorizePage("/Books/EditModal", AccrediPermissions.Books.Edit);
+        });
+    }
+
+    private void ConfigureServiceBus(IConfiguration configuration)
+    {
+        Configure<AbpAzureServiceBusOptions>(options =>
+        {
+            options.Connections.Default.ConnectionString = configuration["AzureServiceBusConnectionString"];
+        });
+    }
+
+    private void ConfigureRedis(IConfiguration configuration)
+    {
+        Configure<RedisCacheOptions>(options =>
+        {
+            options.Configuration = configuration["RedisConfiguration"];
         });
     }
 
@@ -167,23 +182,14 @@ public class AccrediWebModule : AbpModule
 
     private void ConfigureTheme()
     {
-        Configure<LeptonXThemeOptions>(options =>
-        {
-            options.DefaultStyle = LeptonXStyleNames.System;
-        });
+        Configure<LeptonXThemeOptions>(options => { options.DefaultStyle = LeptonXStyleNames.System; });
 
-        Configure<LeptonXThemeMvcOptions>(options =>
-        {
-            options.ApplicationLayout = LeptonXMvcLayouts.SideMenu;
-        });
+        Configure<LeptonXThemeMvcOptions>(options => { options.ApplicationLayout = LeptonXMvcLayouts.SideMenu; });
     }
 
     private void ConfigureBackgroundJobs()
     {
-        Configure<AbpBackgroundJobOptions>(options =>
-        {
-            options.IsJobExecutionEnabled = false;
-        });
+        Configure<AbpBackgroundJobOptions>(options => { options.IsJobExecutionEnabled = false; });
     }
 
     private void ConfigureHealthChecks(ServiceConfigurationContext context)
@@ -217,23 +223,14 @@ public class AccrediWebModule : AbpModule
 
     private void ConfigureCache(IConfiguration configuration)
     {
-        Configure<AbpDistributedCacheOptions>(options =>
-        {
-            options.KeyPrefix = "Accredi:";
-        });
+        Configure<AbpDistributedCacheOptions>(options => { options.KeyPrefix = "Accredi:"; });
     }
 
     private void ConfigureUrls(IConfiguration configuration)
     {
-        Configure<AppUrlOptions>(options =>
-        {
-            options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
-        });
+        Configure<AppUrlOptions>(options => { options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"]; });
 
-        Configure<AbpAccountLinkUserOptions>(options =>
-        {
-            options.LoginUrl = configuration["AuthServer:Authority"];
-        });
+        Configure<AbpAccountLinkUserOptions>(options => { options.LoginUrl = configuration["AuthServer:Authority"]; });
     }
 
     private void ConfigureMultiTenancy()
@@ -271,47 +268,50 @@ public class AccrediWebModule : AbpModule
                 options.Scope.Add("phone");
                 options.Scope.Add("Accredi");
             });
-            /*
-            * This configuration is used when the AuthServer is running on the internal network such as docker or k8s.
-            * Configuring the redirectin URLs for internal network and the web
-            */
-            if (configuration.GetValue<bool>("AuthServer:IsOnK8s"))
+        /*
+         * This configuration is used when the AuthServer is running on the internal network such as docker or k8s.
+         * Configuring the redirectin URLs for internal network and the web
+         */
+        if (configuration.GetValue<bool>("AuthServer:IsOnK8s"))
+        {
+            context.Services.Configure<OpenIdConnectOptions>("oidc", options =>
             {
-                context.Services.Configure<OpenIdConnectOptions>("oidc", options =>
+                options.TokenValidationParameters.ValidIssuers = new[]
                 {
-                    options.TokenValidationParameters.ValidIssuers = new[]
+                    configuration["AuthServer:MetaAddress"]!.EnsureEndsWith('/'),
+                    configuration["AuthServer:Authority"]!.EnsureEndsWith('/')
+                };
+
+                options.MetadataAddress = configuration["AuthServer:MetaAddress"]!.EnsureEndsWith('/') +
+                                          ".well-known/openid-configuration";
+
+                var previousOnRedirectToIdentityProvider = options.Events.OnRedirectToIdentityProvider;
+                options.Events.OnRedirectToIdentityProvider = async ctx =>
+                {
+                    // Intercept the redirection so the browser navigates to the right URL in your host
+                    ctx.ProtocolMessage.IssuerAddress = configuration["AuthServer:Authority"]!.EnsureEndsWith('/') +
+                                                        "connect/authorize";
+
+                    if (previousOnRedirectToIdentityProvider != null)
                     {
-                        configuration["AuthServer:MetaAddress"]!.EnsureEndsWith('/'),
-                        configuration["AuthServer:Authority"]!.EnsureEndsWith('/')
-                    };
+                        await previousOnRedirectToIdentityProvider(ctx);
+                    }
+                };
+                var previousOnRedirectToIdentityProviderForSignOut =
+                    options.Events.OnRedirectToIdentityProviderForSignOut;
+                options.Events.OnRedirectToIdentityProviderForSignOut = async ctx =>
+                {
+                    // Intercept the redirection for signout so the browser navigates to the right URL in your host
+                    ctx.ProtocolMessage.IssuerAddress =
+                        configuration["AuthServer:Authority"]!.EnsureEndsWith('/') + "connect/logout";
 
-                    options.MetadataAddress = configuration["AuthServer:MetaAddress"]!.EnsureEndsWith('/') +
-                                            ".well-known/openid-configuration";
-
-                    var previousOnRedirectToIdentityProvider = options.Events.OnRedirectToIdentityProvider;
-                    options.Events.OnRedirectToIdentityProvider = async ctx =>
+                    if (previousOnRedirectToIdentityProviderForSignOut != null)
                     {
-                        // Intercept the redirection so the browser navigates to the right URL in your host
-                        ctx.ProtocolMessage.IssuerAddress = configuration["AuthServer:Authority"]!.EnsureEndsWith('/') + "connect/authorize";
-
-                        if (previousOnRedirectToIdentityProvider != null)
-                        {
-                            await previousOnRedirectToIdentityProvider(ctx);
-                        }
-                    };
-                    var previousOnRedirectToIdentityProviderForSignOut = options.Events.OnRedirectToIdentityProviderForSignOut;
-                    options.Events.OnRedirectToIdentityProviderForSignOut = async ctx =>
-                    {
-                        // Intercept the redirection for signout so the browser navigates to the right URL in your host
-                        ctx.ProtocolMessage.IssuerAddress = configuration["AuthServer:Authority"]!.EnsureEndsWith('/') + "connect/logout";
-
-                        if (previousOnRedirectToIdentityProviderForSignOut != null)
-                        {
-                            await previousOnRedirectToIdentityProviderForSignOut(ctx);
-                        }
-                    };
-                });
-            }
+                        await previousOnRedirectToIdentityProviderForSignOut(ctx);
+                    }
+                };
+            });
+        }
 
         context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
         {
@@ -321,22 +321,13 @@ public class AccrediWebModule : AbpModule
 
     private void ConfigureImpersonation(ServiceConfigurationContext context, IConfiguration configuration)
     {
-        context.Services.Configure<AbpSaasHostWebOptions>(options =>
-        {
-            options.EnableTenantImpersonation = true;
-        });
-        context.Services.Configure<AbpIdentityWebOptions>(options =>
-        {
-            options.EnableUserImpersonation = true;
-        });
+        context.Services.Configure<AbpSaasHostWebOptions>(options => { options.EnableTenantImpersonation = true; });
+        context.Services.Configure<AbpIdentityWebOptions>(options => { options.EnableUserImpersonation = true; });
     }
 
     private void ConfigureAutoMapper()
     {
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<AccrediWebModule>();
-        });
+        Configure<AbpAutoMapperOptions>(options => { options.AddMaps<AccrediWebModule>(); });
     }
 
     private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
@@ -347,8 +338,12 @@ public class AccrediWebModule : AbpModule
 
             if (hostingEnvironment.IsDevelopment())
             {
-                options.FileSets.ReplaceEmbeddedByPhysical<AccrediDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Accredi.Domain.Shared", Path.DirectorySeparatorChar)));
-                options.FileSets.ReplaceEmbeddedByPhysical<AccrediApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Accredi.Application.Contracts", Path.DirectorySeparatorChar)));
+                options.FileSets.ReplaceEmbeddedByPhysical<AccrediDomainSharedModule>(
+                    Path.Combine(hostingEnvironment.ContentRootPath,
+                        string.Format("..{0}Accredi.Domain.Shared", Path.DirectorySeparatorChar)));
+                options.FileSets.ReplaceEmbeddedByPhysical<AccrediApplicationContractsModule>(
+                    Path.Combine(hostingEnvironment.ContentRootPath,
+                        string.Format("..{0}Accredi.Application.Contracts", Path.DirectorySeparatorChar)));
                 options.FileSets.ReplaceEmbeddedByPhysical<AccrediWebModule>(hostingEnvironment.ContentRootPath);
             }
         });
@@ -361,10 +356,7 @@ public class AccrediWebModule : AbpModule
             options.MenuContributors.Add(new AccrediMenuContributor(configuration));
         });
 
-        Configure<AbpToolbarOptions>(options =>
-        {
-            options.Contributors.Add(new AccrediToolbarContributor());
-        });
+        Configure<AbpToolbarOptions>(options => { options.Contributors.Add(new AccrediToolbarContributor()); });
     }
 
     private void ConfigureSwaggerServices(IServiceCollection services)
@@ -392,11 +384,11 @@ public class AccrediWebModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Accredi");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var redis = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Accredi-Protection-Keys");
         }
     }
-    
+
     private void ConfigureDistributedLocking(
         ServiceConfigurationContext context,
         IConfiguration configuration)
@@ -408,7 +400,7 @@ public class AccrediWebModule : AbpModule
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var connection = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
         });
     }
@@ -445,10 +437,7 @@ public class AccrediWebModule : AbpModule
         app.UseDynamicClaims();
         app.UseAuthorization();
         app.UseSwagger();
-        app.UseAbpSwaggerUI(options =>
-        {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Accredi API");
-        });
+        app.UseAbpSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "Accredi API"); });
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
     }

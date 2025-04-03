@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Accredi.Azure\Accredi.Azure.csproj" />
     <ProjectReference Include="..\..\src\Accredi.HttpApi.Client\Accredi.HttpApi.Client.csproj" />
   </ItemGroup>
 

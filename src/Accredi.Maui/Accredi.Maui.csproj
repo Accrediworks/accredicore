@@ -36,6 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accredi.Azure\Accredi.Azure.csproj" />
     <ProjectReference Include="..\Accredi.HttpApi.Client\Accredi.HttpApi.Client.csproj"/>
   </ItemGroup>
 

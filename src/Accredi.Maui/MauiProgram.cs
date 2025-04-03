@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Accredi.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -54,6 +55,7 @@ public static class MauiProgram
     private static void ConfigureConfiguration(MauiAppBuilder builder)
     {
         var assembly = typeof(App).GetTypeInfo().Assembly;
-        builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.json", optional: false, false);
+        builder.Configuration
+            .AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.json", optional: false, false);
     }
 }

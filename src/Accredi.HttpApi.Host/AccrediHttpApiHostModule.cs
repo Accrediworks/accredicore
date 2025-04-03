@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Medallion.Threading;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Volo.Abp.PermissionManagement;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,16 +20,16 @@ using Accredi.MultiTenancy;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Accredi.HealthChecks;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp;
 using Volo.Abp.Studio;
-using Volo.Abp.Account;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
+using Volo.Abp.AzureServiceBus;
 using Volo.Abp.Caching;
 using Volo.Abp.Identity.AspNetCore;
 using Volo.Abp.Modularity;
@@ -40,8 +38,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Studio.Client.AspNetCore;
-using Volo.Abp.AspNetCore.Authentication.JwtBearer;
-using Volo.Abp.EventBus.RabbitMq;
+using Volo.Abp.EventBus.Azure;
 
 namespace Accredi;
 
@@ -54,7 +51,7 @@ namespace Accredi;
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
     typeof(AbpIdentityAspNetCoreModule),
     typeof(AccrediApplicationModule),
-    typeof(AbpEventBusRabbitMqModule),
+    typeof(AbpEventBusAzureModule),
     typeof(AccrediEntityFrameworkCoreModule),
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule)
@@ -72,6 +69,8 @@ public class AccrediHttpApiHostModule : AbpModule
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
         }
 
+        ConfigureRedis(configuration);
+        ConfigureServiceBus(configuration);
         ConfigureUrls(configuration);
         ConfigureConventionalControllers();
         ConfigureAuthentication(context, configuration);
@@ -87,6 +86,22 @@ public class AccrediHttpApiHostModule : AbpModule
         Configure<PermissionManagementOptions>(options =>
         {
             options.IsDynamicPermissionStoreEnabled = true;
+        });
+    } 
+    
+    private void ConfigureServiceBus(IConfiguration configuration)
+    {
+        Configure<AbpAzureServiceBusOptions>(options =>
+        {
+            options.Connections.Default.ConnectionString = configuration["AzureServiceBusConnectionString"];
+        });
+    }
+
+    private void ConfigureRedis(IConfiguration configuration)
+    {
+        Configure<RedisCacheOptions>(options =>
+        {
+            options.Configuration = configuration["RedisConfiguration"];
         });
     }
 
@@ -180,7 +195,7 @@ public class AccrediHttpApiHostModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Accredi");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var redis = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Accredi-Protection-Keys");
         }
     }
@@ -196,7 +211,7 @@ public class AccrediHttpApiHostModule : AbpModule
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            var connection = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
             return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
         });
     }

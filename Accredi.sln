@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accredi.Web.Public", "src\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accredi.Maui", "src\Accredi.Maui\Accredi.Maui.csproj", "{257BCCF2-E26D-4B21-8B7F-934F01521756}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accredi.Azure", "src\Accredi.Azure\Accredi.Azure.csproj", "{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,10 @@ Global
 		{257BCCF2-E26D-4B21-8B7F-934F01521756}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{257BCCF2-E26D-4B21-8B7F-934F01521756}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{257BCCF2-E26D-4B21-8B7F-934F01521756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +151,7 @@ Global
 		{70680696-BB1E-4383-BCB2-42C3767171FB} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 		{AD808A58-CAD9-4B9D-BBE1-2F612C24B583} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 		{257BCCF2-E26D-4B21-8B7F-934F01521756} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
+		{34C08EE1-E9D5-4BB8-BA33-C0019BC15A9C} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28315BFD-90E7-4E14-A2EA-F3D23AF4126F}

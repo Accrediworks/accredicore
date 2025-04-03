@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Accredi.Azure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -25,9 +26,8 @@ public class AccrediDbContextFactory : IDesignTimeDbContextFactory<AccrediDbCont
     private static IConfigurationRoot BuildConfiguration()
     {
         var builder = new ConfigurationBuilder()
-            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Accredi.DbMigrator/"))
-            .AddJsonFile("appsettings.json", optional: false);
-
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Accredi.DbMigrator/"))
+                .AddJsonFile("appsettings.json", optional: false);
         return builder.Build();
     }
 }

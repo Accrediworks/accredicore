@@ -53,6 +53,7 @@ using Volo.Saas.Host;
 using Volo.Abp.OpenIddict;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.Security.Claims;
@@ -132,6 +133,11 @@ public class AccrediAuthServerModule : AbpModule
 
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 
+        Configure<RedisCacheOptions>(options =>
+        {
+            options.Configuration = configuration["RedisConfiguration"];
+        });
+        
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Resources
@@ -190,14 +196,14 @@ public class AccrediAuthServerModule : AbpModule
             var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Accredi");
             if (!hostingEnvironment.IsDevelopment())
             {
-                var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+                var redis = ConnectionMultiplexer.Connect(configuration["RedisConfiguration"]!);
                 dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Accredi-Protection-Keys");
             }
         
             context.Services.AddSingleton<IDistributedLockProvider>(sp =>
             {
                 var connection = ConnectionMultiplexer
-                    .Connect(configuration["Redis:Configuration"]!);
+                    .Connect(configuration["RedisConfiguration"]!);
                 return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
             });
         }
