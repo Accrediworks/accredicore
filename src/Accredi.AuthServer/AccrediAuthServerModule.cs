@@ -52,6 +52,7 @@ using Microsoft.AspNetCore.Authentication.Twitter;
 using Volo.Saas.Host;
 using Volo.Abp.OpenIddict;
 using System.Security.Cryptography.X509Certificates;
+using Accredi.Azure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
@@ -101,7 +102,7 @@ public class AccrediAuthServerModule : AbpModule
 
             PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
             {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
+                serverBuilder.AddAzureProductionEncryptionAndSigningCertificate(configuration);
                 serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
             });
         }
