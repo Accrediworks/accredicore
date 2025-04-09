@@ -1,0 +1,161 @@
+name: Publish Docker image
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches:
+      - main
+
+jobs:
+  build-solution:
+    name: Build & test solution
+    runs-on: ubuntu-latest
+    outputs:
+      version_number: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.x
+            8.x
+
+      - name: Get next version
+        uses: reecetech/version-increment@2024.4.3
+        id: version
+        with:
+          scheme: conventional_commits
+          increment: patch
+
+      - name: Add nuget repo
+        run: dotnet nuget add source --username USERNAME --password ${{secrets.PAT_TOKEN}} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/AccrediWorks/index.json"
+
+      - name: Build Solution
+        run: dotnet build -c Release
+
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build
+  
+  
+  publish-web:
+    name: Publish web service
+    uses: ./.github/workflows/publish-service.yml
+    needs: build-solution
+    with:
+      service-name: web
+      project-path: src/Accredi.Web
+      dockerfile-path: src/Accredi.Web/Dockerfile
+      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+    secrets: inherit
+    
+  publish-api:
+    name: Publish api service
+    uses: ./.github/workflows/publish-service.yml
+    needs: build-solution
+    with:
+      service-name: api
+      project-path: src/Accredi.HttpApi.Host
+      dockerfile-path: src/Accredi.HttpApi.Host/Dockerfile
+      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+    secrets: inherit
+    
+  publish-auth:
+    name: Publish auth service
+    uses: ./.github/workflows/publish-service.yml
+    needs: build-solution
+    with:
+      service-name: auth
+      project-path: src/Accredi.AuthServer
+      dockerfile-path: src/Accredi.AuthServer/Dockerfile
+      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+    secrets: inherit
+
+  docker-web:
+    name: Package web
+    needs: [ "publish-web" ]
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      artifact_name: web
+      image_name: accredi-web
+      version_number: ${{ needs.publish-web.outputs.version_number }}
+    secrets:
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  docker-api:
+    name: Package api
+    needs: [ "publish-api" ]
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      artifact_name: api
+      image_name: accredi-api
+      version_number: ${{ needs.publish-api.outputs.version_number }}
+    secrets:
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  docker-auth:
+    name: Package auth
+    needs: [ "publish-auth" ]
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      artifact_name: auth
+      image_name: accredi-auth
+      version_number: ${{ needs.publish-auth.outputs.version_number }}
+    secrets:
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    outputs:
+      version_number: ${{ needs.docker-web-parent.outputs.version_number }}
+    needs: [ "docker-web","docker-api" ,"docker-auth"]
+
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ needs.docker-web-parent.outputs.version_number }}
+          name: Release ${{ needs.docker-web-parent.outputs.version_number }}
+  
+  deploy-web:
+    needs: [ "release" ]
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      app_name: accredi-web
+      image_name: accredi-web
+      version_number: ${{ needs.release.outputs.version_number }}
+    secrets:
+      AZURE_LOGIN: ${{ secrets.AZURE_LOGIN }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  
+  deploy-api:
+    needs: [ "release" ]
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      app_name: accredi-api
+      image_name: accredi-api
+      version_number: ${{ needs.release.outputs.version_number }}
+    secrets:
+      AZURE_LOGIN: ${{ secrets.AZURE_LOGIN }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      
+  deploy-auth:
+    needs: [ "release" ]
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      app_name: accredi-auth
+      image_name: accredi-auth
+      version_number: ${{ needs.release.outputs.version_number }}
+    secrets:
+      AZURE_LOGIN: ${{ secrets.AZURE_LOGIN }}
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
