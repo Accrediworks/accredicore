@@ -46,10 +46,10 @@ jobs:
     uses: ./.github/workflows/publish-service.yml
     needs: build-solution
     with:
-      service-name: web
-      project-path: src/Accredi.Web
-      dockerfile-path: src/Accredi.Web/Dockerfile
-      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      service_name: web
+      project_path: src/Accredi.Web
+      dockerfile_path: src/Accredi.Web/Dockerfile
+      nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
     secrets: inherit
     
   publish-api:
@@ -57,10 +57,10 @@ jobs:
     uses: ./.github/workflows/publish-service.yml
     needs: build-solution
     with:
-      service-name: api
-      project-path: src/Accredi.HttpApi.Host
-      dockerfile-path: src/Accredi.HttpApi.Host/Dockerfile
-      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      service_name: api
+      project_path: src/Accredi.HttpApi.Host
+      dockerfile_path: src/Accredi.HttpApi.Host/Dockerfile
+      nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
     secrets: inherit
     
   publish-auth:
@@ -68,10 +68,10 @@ jobs:
     uses: ./.github/workflows/publish-service.yml
     needs: build-solution
     with:
-      service-name: auth
-      project-path: src/Accredi.AuthServer
-      dockerfile-path: src/Accredi.AuthServer/Dockerfile
-      nuget-source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      service_name: auth
+      project_path: src/Accredi.AuthServer
+      dockerfile_path: src/Accredi.AuthServer/Dockerfile
+      nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
     secrets: inherit
 
   docker-web:
