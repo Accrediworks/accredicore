@@ -50,6 +50,7 @@ jobs:
       project_path: src/Accredi.Web
       dockerfile_path: src/Accredi.Web/Dockerfile
       nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
     
   publish-api:
@@ -61,6 +62,7 @@ jobs:
       project_path: src/Accredi.HttpApi.Host
       dockerfile_path: src/Accredi.HttpApi.Host/Dockerfile
       nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
     
   publish-auth:
@@ -72,6 +74,7 @@ jobs:
       project_path: src/Accredi.AuthServer
       dockerfile_path: src/Accredi.AuthServer/Dockerfile
       nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
 
   docker-web:
