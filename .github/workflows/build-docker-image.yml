@@ -12,13 +12,6 @@ on:
       version_number:
         required: true
         type: string
-    secrets:
-      DOCKER_REGISTRY:
-        required: true
-      DOCKER_USERNAME:
-        required: true
-      DOCKER_PASSWORD:
-        required: true
 
 jobs:
   build-and-push:
