@@ -35,7 +35,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_REGISTRY }}/${{ inputs.image_name }}
+          images: ${{ secrets.AZURE_REGISTRY_URL }}/${{ inputs.image_name }}
           tags: |
             latest
             ${{ inputs.version_number }}
