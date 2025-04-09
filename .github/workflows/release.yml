@@ -111,15 +111,15 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     outputs:
-      version_number: ${{ needs.docker-web-parent.outputs.version_number }}
+      version_number: ${{ needs.docker-web.outputs.version_number }}
     needs: [ "docker-web","docker-api" ,"docker-auth"]
 
     steps:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ needs.docker-web-parent.outputs.version_number }}
-          name: Release ${{ needs.docker-web-parent.outputs.version_number }}
+          tag: v${{ needs.docker-web.outputs.version_number }}
+          name: Release ${{ needs.docker-web.outputs.version_number }}
   
   deploy-web:
     needs: [ "release" ]
