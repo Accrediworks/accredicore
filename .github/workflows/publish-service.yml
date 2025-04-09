@@ -3,16 +3,19 @@ name: Publish Service
 on:
   workflow_call:
     inputs:
-      service-name:
+      service_name:
         required: true
         type: string
-      project-path:
+      project_path:
         required: true
         type: string
-      dockerfile-path:
+      dockerfile_path:
         required: true
         type: string
-      nuget-source:
+      nuget_source:
+        required: true
+        type: string
+      version_number:
         required: true
         type: string
     outputs:
@@ -24,7 +27,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     outputs:
-      version_number: ${{ steps.version.outputs.version }}
+      version_number: ${{ inputs.version_number }}
 
     steps:
       - name: Pass version number to next job
@@ -52,17 +55,17 @@ jobs:
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.PAT_TOKEN }} --store-password-in-clear-text --name github "${{ inputs.nuget-source }}"
 
       - name: Set version
-        run: setversion ${{ inputs.version_number }} ..\..\common.props
+        run: setversion ${{ inputs.version_number }} common.props
 
       - name: Publish
-        run: dotnet publish ${{ inputs.project-path }} -c Release -o output/publish
+        run: dotnet publish ${{ inputs.project_path }} -c Release -o output/publish
 
       - name: Copy Dockerfile
-        run: cp ${{ inputs.dockerfile-path }} output/Dockerfile
+        run: cp ${{ inputs.dockerfile_path }} output/Dockerfile
 
       - name: Upload Publish Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.service-name }}-publish
+          name: ${{ inputs.service_name }}-publish
           path: output
           overwrite: true
