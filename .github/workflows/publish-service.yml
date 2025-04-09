@@ -52,7 +52,7 @@ jobs:
         run: abp install-libs
 
       - name: Add nuget repo
-        run: dotnet nuget add source --username USERNAME --password ${{ secrets.PAT_TOKEN }} --store-password-in-clear-text --name github "${{ inputs.nuget-source }}"
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.PAT_TOKEN }} --store-password-in-clear-text --name github "${{ inputs.nuget_source }}"
 
       - name: Set version
         run: setversion ${{ inputs.version_number }} common.props
