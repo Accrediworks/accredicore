@@ -52,7 +52,7 @@ jobs:
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.PAT_TOKEN }} --store-password-in-clear-text --name github "${{ inputs.nuget-source }}"
 
       - name: Set version
-        run: setversion ${{ inputs.version_number }} common.props
+        run: setversion ${{ inputs.version_number }} ..\..\common.props
 
       - name: Publish
         run: dotnet publish ${{ inputs.project-path }} -c Release -o output/publish
