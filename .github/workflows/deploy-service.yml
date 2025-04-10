@@ -12,11 +12,6 @@ on:
       version_number:
         required: true
         type: string
-    secrets:
-      AZURE_LOGIN:
-        required: true
-      DOCKER_REGISTRY:
-        required: true
 
 jobs:
   deploy:

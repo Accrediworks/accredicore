@@ -113,8 +113,6 @@ jobs:
   release:
     name: Create release
     runs-on: ubuntu-latest
-    outputs:
-      version_number: ${{ steps.version.outputs.version }}
     needs: [ "docker-web","docker-api" ,"docker-auth"]
 
     steps:
