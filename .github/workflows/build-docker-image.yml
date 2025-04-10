@@ -15,6 +15,7 @@ on:
     outputs:
       version_number:
         description: "Version number of the published service"
+        value: ${{ jobs.build-and-push.outputs.version_number }}
 
 jobs:
   build-and-push:
