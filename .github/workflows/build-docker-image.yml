@@ -12,6 +12,9 @@ on:
       version_number:
         required: true
         type: string
+    outputs:
+      version_number:
+        description: "Version number of the published service"
 
 jobs:
   build-and-push:

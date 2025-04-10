@@ -21,7 +21,6 @@ on:
     outputs:
       version_number:
         description: "Version number of the published service"
-        value: ${{ jobs.publish.outputs.version_number }}
 
 jobs:
   publish:
