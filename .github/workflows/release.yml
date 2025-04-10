@@ -45,7 +45,7 @@ jobs:
         run: dotnet test --configuration Release --no-build
   
   
-  publish-web:
+  publish-portal:
     name: Publish web service
     uses: ./.github/workflows/publish-service.yml
     needs: build-solution
@@ -69,7 +69,7 @@ jobs:
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
     
-  publish-auth:
+  publish-account:
     name: Publish auth service
     uses: ./.github/workflows/publish-service.yml
     needs: build-solution
@@ -81,14 +81,14 @@ jobs:
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
 
-  docker-web:
+  docker-portal:
     name: Package web
-    needs: [ "publish-web" ]
+    needs: [ "publish-portal" ]
     uses: ./.github/workflows/build-docker-image.yml
     with:
       artifact_name: web
-      image_name: accredi-web
-      version_number: ${{ needs.publish-web.outputs.version_number }}
+      image_name: accredi-portal
+      version_number: ${{ needs.publish-portal.outputs.version_number }}
     secrets: inherit
 
   docker-api:
@@ -101,34 +101,34 @@ jobs:
       version_number: ${{ needs.publish-api.outputs.version_number }}
     secrets: inherit
 
-  docker-auth:
+  docker-account:
     name: Package auth
-    needs: [ "publish-auth" ]
+    needs: [ "publish-account" ]
     uses: ./.github/workflows/build-docker-image.yml
     with:
       artifact_name: auth
-      image_name: accredi-auth
-      version_number: ${{ needs.publish-auth.outputs.version_number }}
+      image_name: accredi-account
+      version_number: ${{ needs.publish-account.outputs.version_number }}
     secrets: inherit
 
   release:
     name: Create release
     runs-on: ubuntu-latest
-    needs: [ "docker-web","docker-api" ,"docker-auth"]
+    needs: [ "docker-portal","docker-api" ,"docker-account"]
 
     steps:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ needs.docker-auth.outputs.version_number }}
-          name: Release ${{ needs.docker-auth.outputs.version_number }}
+          tag: v${{ needs.docker-account.outputs.version_number }}
+          name: Release ${{ needs.docker-account.outputs.version_number }}
   
-  deploy-web:
+  deploy-portal:
     needs: [ "release" ]
     uses: ./.github/workflows/deploy-service.yml
     with:
-      app_name: accredi-web
-      image_name: accredi-web
+      app_name: accredi-portal
+      image_name: accredi-portal
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
   
@@ -141,11 +141,11 @@ jobs:
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
       
-  deploy-auth:
+  deploy-account:
     needs: [ "release" ]
     uses: ./.github/workflows/deploy-service.yml
     with:
-      app_name: accredi-auth
-      image_name: accredi-auth
+      app_name: accredi-account
+      image_name: accredi-account
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
