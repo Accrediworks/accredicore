@@ -17,8 +17,14 @@ jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    outputs:
+      version_number: ${{ steps.version.outputs.version }}
 
     steps:
+      - name: Pass version number to next job
+        id: version
+        run: echo "version=${{ inputs.version_number || '0.0.0' }}" >> $GITHUB_OUTPUT
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:

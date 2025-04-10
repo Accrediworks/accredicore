@@ -119,8 +119,8 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ needs.build-solution.outputs.version_number }}
-          name: Release ${{ needs.build-solution.outputs.version_number }}
+          tag: v${{ needs.docker-auth.outputs.version_number }}
+          name: Release ${{ needs.docker-auth.outputs.version_number }}
   
   deploy-web:
     needs: [ "release" ]
