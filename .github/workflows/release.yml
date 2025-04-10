@@ -121,8 +121,8 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ needs.docker-web.outputs.version_number }}
-          name: Release ${{ needs.docker-web.outputs.version_number }}
+          tag: v${{ needs.build-solution.outputs.version_number }}
+          name: Release ${{ needs.build-solution.outputs.version_number }}
   
   deploy-web:
     needs: [ "release" ]
@@ -130,7 +130,7 @@ jobs:
     with:
       app_name: accredi-web
       image_name: accredi-web
-      version_number: ${{ needs.release.outputs.version_number }}
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
   
   deploy-api:
@@ -139,7 +139,7 @@ jobs:
     with:
       app_name: accredi-api
       image_name: accredi-api
-      version_number: ${{ needs.release.outputs.version_number }}
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
       
   deploy-auth:
@@ -148,5 +148,5 @@ jobs:
     with:
       app_name: accredi-auth
       image_name: accredi-auth
-      version_number: ${{ needs.release.outputs.version_number }}
+      version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
