@@ -27,7 +27,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     outputs:
-      version_number: ${{ inputs.version_number }}
+      version_number: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Pass version number to next job
