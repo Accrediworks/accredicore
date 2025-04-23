@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Accredi.Crm</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.1.1" />
+    <ProjectReference Include="..\Accredi.Crm.Application.Contracts\Accredi.Crm.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Accredi.Crm.Domain\Accredi.Crm.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

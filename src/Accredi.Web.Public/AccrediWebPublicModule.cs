@@ -14,6 +14,8 @@ using Accredi.Localization;
 using Accredi.MultiTenancy;
 using Accredi.Web.Public.Menus;
 using Accredi.Web.Public.HealthChecks;
+using Accredi.Web.Theme.Portal;
+using Accredi.Web.Theme.Portal.Bundling;
 using StackExchange.Redis;
 using Volo.Abp;
 using Volo.Abp.Studio;
@@ -23,9 +25,6 @@ using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling;
-using Volo.Abp.LeptonX.Shared;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
 using Volo.Abp.AspNetCore.Serilog;
@@ -60,7 +59,7 @@ namespace Accredi.Web.Public;
     typeof(AbpDistributedLockingModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpStudioClientAspNetCoreModule),
-    typeof(AbpAspNetCoreMvcUiLeptonXThemeModule),
+    typeof(PortalThemeModule),
     typeof(AccrediHttpApiClientModule),
     typeof(CmsKitProPublicWebModule),
     typeof(AccrediHttpApiModule),
@@ -126,7 +125,7 @@ public class AccrediWebPublicModule : AbpModule
         Configure<AbpBundlingOptions>(options =>
         {
             options.StyleBundles.Configure(
-                LeptonXThemeBundles.Styles.Global,
+                PortalThemeBundles.Styles.Global,
                 bundle =>
                 {
                     bundle.AddFiles("/global-scripts.js");
@@ -146,15 +145,7 @@ public class AccrediWebPublicModule : AbpModule
     
     private void ConfigureTheme()
     {
-        Configure<LeptonXThemeOptions>(options =>
-        {
-            options.DefaultStyle = LeptonXStyleNames.System;
-        });
-
-        Configure<LeptonXThemeMvcOptions>(options =>
-        {
-            options.ApplicationLayout = LeptonXMvcLayouts.TopMenu;
-        });
+      
     }
 
     private void ConfigureHealthChecks(ServiceConfigurationContext context)

@@ -1,3 +1,4 @@
+using Accredi.Accounts;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Uow;
@@ -20,6 +21,7 @@ using Volo.Abp.Gdpr;
 using Volo.CmsKit.EntityFrameworkCore;
 using Volo.Chat.EntityFrameworkCore;
 using Volo.Abp.Studio;
+using Accredi.Crm.EntityFrameworkCore;
 
 namespace Accredi.EntityFrameworkCore;
 
@@ -42,6 +44,7 @@ namespace Accredi.EntityFrameworkCore;
     typeof(CmsKitProEntityFrameworkCoreModule),
     typeof(BlobStoringDatabaseEntityFrameworkCoreModule)
     )]
+[DependsOn(typeof(CrmEntityFrameworkCoreModule))]
 public class AccrediEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
@@ -54,9 +57,10 @@ public class AccrediEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<AccrediDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+
         });
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)
@@ -72,6 +76,6 @@ public class AccrediEntityFrameworkCoreModule : AbpModule
             options.UseSqlServer();
 
         });
-        
+
     }
 }

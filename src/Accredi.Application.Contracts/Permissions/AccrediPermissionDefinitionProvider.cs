@@ -20,6 +20,11 @@ public class AccrediPermissionDefinitionProvider : PermissionDefinitionProvider
         booksPermission.AddChild(AccrediPermissions.Books.Delete, L("Permission:Books.Delete"));
         //Define your own permissions here. Example:
         //myGroup.AddPermission(AccrediPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+        var accountPermission = myGroup.AddPermission(AccrediPermissions.Accounts.Default, L("Permission:Accounts"));
+        accountPermission.AddChild(AccrediPermissions.Accounts.Create, L("Permission:Create"));
+        accountPermission.AddChild(AccrediPermissions.Accounts.Edit, L("Permission:Edit"));
+        accountPermission.AddChild(AccrediPermissions.Accounts.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

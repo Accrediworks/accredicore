@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Accredi.Crm</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.Authorization.Abstractions" Version="9.1.1" />
+    <ProjectReference Include="..\Accredi.Crm.Domain.Shared\Accredi.Crm.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

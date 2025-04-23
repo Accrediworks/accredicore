@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.4",
+    "tailwindcss": "^4.1.4"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm:tailwind:watch\" \"dotnet watch run\"",
+    "tailwind:watch": "npx @tailwindcss/cli -i ./wwwroot/themes/portal/css/tailwind.css -o ./wwwroot/themes/portal/css/layout.css --watch"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

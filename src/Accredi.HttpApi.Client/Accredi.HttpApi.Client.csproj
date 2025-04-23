@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
@@ -10,27 +10,27 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Accredi.Application.Contracts\Accredi.Application.Contracts.csproj" />
+  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.HttpApi.Client\Accredi.Crm.HttpApi.Client.csproj" /></ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi.Client" Version="9.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi.Client" Version="9.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.Account.Pro.Admin.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.Account.Pro.Public.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Saas.Host.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Chat.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.AuditLogging.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.OpenIddict.Pro.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.LanguageManagement.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.FileManagement.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.TextTemplateManagement.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.Abp.Gdpr.HttpApi.Client" Version="9.1.0" />
-    <PackageReference Include="Volo.CmsKit.Pro.HttpApi.Client" Version="9.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Saas.Host.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Chat.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.AuditLogging.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Pro.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.LanguageManagement.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.FileManagement.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.TextTemplateManagement.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.Gdpr.HttpApi.Client" Version="9.1.1" />
+    <PackageReference Include="Volo.CmsKit.Pro.HttpApi.Client" Version="9.1.1" />
   </ItemGroup>
 
   <ItemGroup>

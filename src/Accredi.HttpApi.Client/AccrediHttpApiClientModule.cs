@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
@@ -15,6 +15,7 @@ using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 using Volo.CmsKit;
 using Volo.Chat;
+using Accredi.Crm;
 
 namespace Accredi;
 
@@ -36,7 +37,8 @@ namespace Accredi;
     typeof(ChatHttpApiClientModule),
     typeof(AbpSettingManagementHttpApiClientModule)
 )]
-public class AccrediHttpApiClientModule : AbpModule
+[DependsOn(typeof(CrmHttpApiClientModule))]
+    public class AccrediHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";
 

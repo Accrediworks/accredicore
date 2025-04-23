@@ -1,0 +1,15 @@
+{
+  "Culture": "en",
+  "Texts": {
+    "SamplePageMessage": "A sample page for the Crm module",
+    "Menu:Crm": "Crm",
+    "Permission:Accounts": "Accounts",
+    "Permission:Crm": "Crm",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "Permission:Contacts": "Contacts",
+    "Account": "Account",
+    "Accounts": "Accounts"
+  }
+}

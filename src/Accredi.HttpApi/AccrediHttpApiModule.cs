@@ -1,4 +1,4 @@
-﻿using Localization.Resources.AbpUi;
+using Localization.Resources.AbpUi;
 using Accredi.Localization;
 using Volo.Abp.Account;
 using Volo.Abp.SettingManagement;
@@ -16,6 +16,7 @@ using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 using Volo.CmsKit;
 using Volo.Chat;
+using Accredi.Crm;
 
 namespace Accredi;
 
@@ -37,7 +38,8 @@ namespace Accredi;
     typeof(ChatHttpApiModule),
     typeof(AbpFeatureManagementHttpApiModule)
     )]
-public class AccrediHttpApiModule : AbpModule
+[DependsOn(typeof(CrmHttpApiModule))]
+    public class AccrediHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

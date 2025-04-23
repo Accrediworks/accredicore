@@ -1,3 +1,4 @@
+using Accredi.Accounts;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Accredi.Books;
@@ -22,6 +23,7 @@ using Volo.Saas.Editions;
 using Volo.Saas.Tenants;
 using Volo.Abp.Gdpr;
 using Volo.CmsKit.EntityFrameworkCore;
+using Accredi.Crm.EntityFrameworkCore;
 
 namespace Accredi.EntityFrameworkCore;
 
@@ -33,9 +35,6 @@ public class AccrediDbContext :
     ISaasDbContext,
     IIdentityProDbContext
 {
-    /* Add DbSet properties for your Aggregate Roots / Entities here. */
-
-    public DbSet<Book> Books { get; set; }
 
     #region Entities from the modules
 
@@ -95,15 +94,8 @@ public class AccrediDbContext :
         builder.ConfigureCmsKit();
         builder.ConfigureCmsKitPro();
         builder.ConfigureBlobStoring();
-        
-        builder.Entity<Book>(b =>
-        {
-            b.ToTable(AccrediConsts.DbTablePrefix + "Books",
-                AccrediConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
-        });
-        
+
+
         /* Configure your own tables/entities inside here */
 
         //builder.Entity<YourEntity>(b =>
@@ -112,5 +104,7 @@ public class AccrediDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.ConfigureCrm();
+
     }
 }
