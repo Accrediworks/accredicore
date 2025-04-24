@@ -7,6 +7,8 @@ using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 using JetBrains.Annotations;
 
+using Accredi.Crm.AccountLocations;
+
 using Volo.Abp;
 
 namespace Accredi.Crm.Accounts
@@ -21,6 +23,8 @@ namespace Accredi.Crm.Accounts
         [CanBeNull]
         public virtual string? TaxReference { get; set; }
 
+        public ICollection<AccountLocation> AccountLocations { get; private set; }
+
         protected Account()
         {
 
@@ -32,6 +36,7 @@ namespace Accredi.Crm.Accounts
             Id = id;
             Check.NotNull(name, nameof(name));
             Name = name;
+            AccountLocations = new Collection<AccountLocation>();
         }
 
     }

@@ -10,6 +10,27 @@
     "Permission:Delete": "Delete",
     "Permission:Contacts": "Contacts",
     "Account": "Account",
-    "Accounts": "Accounts"
+    "Accounts": "Accounts",
+    "Permission:AccountLocations": "Account Locations",
+    "Permission:Countries": "Countries",
+    "Country": "Country",
+    "Enum:ContactEmailType.0": "Personal",
+    "Enum:ContactEmailType.1": "Business",
+    "Enum:ContactEmailType.2": "Other",
+    "Permission:ContactEmails": "Contact Emails",
+    "Enum:ContactTelephoneType.0": "Personal",
+    "Enum:ContactTelephoneType.1": "Business",
+    "Enum:ContactTelephoneType.2": "Other",
+    "Permission:ContactTelephones": "Contact Telephones",
+    "Enum:ContactStateType.0": "Active",
+    "Enum:ContactStateType.1": "Inactive",
+    "Permission:ContactStates": "Contact States",
+    "ContactState": "Contact state",
+    "Enum:ContactLevelType.0": "Employee",
+    "Enum:ContactLevelType.1": "Supervisor",
+    "Enum:ContactLevelType.2": "Manager",
+    "Enum:ContactLevelType.3": "Owner",
+    "Permission:ContactLevels": "Contact Levels",
+    "ContactLevel": "Contact level"
   }
 }

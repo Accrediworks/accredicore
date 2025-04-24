@@ -1,6 +1,6 @@
 namespace Accredi.Crm.Shared
 {
-    public abstract class LookupDtoBase<TKey>
+    public class LookupDto<TKey>
     {
         public TKey Id { get; set; }
 

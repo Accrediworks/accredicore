@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Accredi.Crm.Domain.Shared\Accredi.Crm.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Accounts\" />
+  </ItemGroup>
+
 </Project>
