@@ -1,3 +1,4 @@
+using Accredi.Crm.ContactAccounts;
 using Accredi.Crm.ContactLevels;
 using Accredi.Crm.ContactStates;
 using Accredi.Crm.ContactTelephones;
@@ -51,15 +52,44 @@ public static class CrmDbContextModelCreatingExtensions
             });
 
         }
-        builder.Entity<Account>(b =>
+        builder.Entity<ContactState>(b =>
                 {
-                    b.ToTable(CrmDbProperties.DbTablePrefix + "Accounts", CrmDbProperties.DbSchema);
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactStates", CrmDbProperties.DbSchema);
                     b.ConfigureByConvention();
-                    b.Property(x => x.TenantId).HasColumnName(nameof(Account.TenantId));
-                    b.Property(x => x.Name).HasColumnName(nameof(Account.Name)).IsRequired();
-                    b.Property(x => x.TaxReference).HasColumnName(nameof(Account.TaxReference));
-                    b.HasMany(x => x.AccountLocations).WithOne().HasForeignKey(x => x.AccountId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactState.TenantId));
+                    b.Property(x => x.Name).HasColumnName(nameof(ContactState.Name)).IsRequired();
+                    b.Property(x => x.Type).HasColumnName(nameof(ContactState.Type));
                 });
+
+        builder.Entity<ContactTelephone>(b =>
+                {
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactTelephones", CrmDbProperties.DbSchema);
+                    b.ConfigureByConvention();
+                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactTelephone.TenantId));
+                    b.Property(x => x.Telephone).HasColumnName(nameof(ContactTelephone.Telephone)).IsRequired();
+                    b.Property(x => x.Type).HasColumnName(nameof(ContactTelephone.Type));
+                    b.HasOne<Contact>().WithMany(x => x.ContactTelephones).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                });
+
+        builder.Entity<ContactEmail>(b =>
+                {
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactEmails", CrmDbProperties.DbSchema);
+                    b.ConfigureByConvention();
+                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactEmail.TenantId));
+                    b.Property(x => x.Email).HasColumnName(nameof(ContactEmail.Email)).IsRequired();
+                    b.Property(x => x.Type).HasColumnName(nameof(ContactEmail.Type));
+                    b.HasOne<Contact>().WithMany(x => x.ContactEmails).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                });
+
+        builder.Entity<ContactLevel>(b =>
+                {
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactLevels", CrmDbProperties.DbSchema);
+                    b.ConfigureByConvention();
+                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactLevel.TenantId));
+                    b.Property(x => x.Name).HasColumnName(nameof(ContactLevel.Name)).IsRequired();
+                    b.Property(x => x.Type).HasColumnName(nameof(ContactLevel.Type));
+                });
+
         builder.Entity<AccountLocation>(b =>
                 {
                     b.ToTable(CrmDbProperties.DbTablePrefix + "AccountLocations", CrmDbProperties.DbSchema);
@@ -75,43 +105,14 @@ public static class CrmDbContextModelCreatingExtensions
                     b.HasOne<Country>().WithMany().IsRequired().HasForeignKey(x => x.CountryId).OnDelete(DeleteBehavior.NoAction);
                     b.HasOne<Account>().WithMany(x => x.AccountLocations).HasForeignKey(x => x.AccountId).IsRequired().OnDelete(DeleteBehavior.Cascade);
                 });
-
-        builder.Entity<ContactEmail>(b =>
+        builder.Entity<Account>(b =>
                 {
-                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactEmails", CrmDbProperties.DbSchema);
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "Accounts", CrmDbProperties.DbSchema);
                     b.ConfigureByConvention();
-                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactEmail.TenantId));
-                    b.Property(x => x.Email).HasColumnName(nameof(ContactEmail.Email)).IsRequired();
-                    b.Property(x => x.Type).HasColumnName(nameof(ContactEmail.Type));
-                    b.HasOne<Contact>().WithMany(x => x.ContactEmails).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-                });
-
-        builder.Entity<ContactTelephone>(b =>
-                {
-                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactTelephones", CrmDbProperties.DbSchema);
-                    b.ConfigureByConvention();
-                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactTelephone.TenantId));
-                    b.Property(x => x.PhoneNumber).HasColumnName(nameof(ContactTelephone.PhoneNumber)).IsRequired();
-                    b.Property(x => x.Type).HasColumnName(nameof(ContactTelephone.Type));
-                    b.HasOne<Contact>().WithMany(x => x.ContactTelephones).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-                });
-
-        builder.Entity<ContactState>(b =>
-                {
-                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactStates", CrmDbProperties.DbSchema);
-                    b.ConfigureByConvention();
-                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactState.TenantId));
-                    b.Property(x => x.Name).HasColumnName(nameof(ContactState.Name)).IsRequired();
-                    b.Property(x => x.Type).HasColumnName(nameof(ContactState.Type));
-                });
-
-        builder.Entity<ContactLevel>(b =>
-                {
-                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactLevels", CrmDbProperties.DbSchema);
-                    b.ConfigureByConvention();
-                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactLevel.TenantId));
-                    b.Property(x => x.Name).HasColumnName(nameof(ContactLevel.Name)).IsRequired();
-                    b.Property(x => x.Type).HasColumnName(nameof(ContactLevel.Type));
+                    b.Property(x => x.TenantId).HasColumnName(nameof(Account.TenantId));
+                    b.Property(x => x.Name).HasColumnName(nameof(Account.Name)).IsRequired();
+                    b.Property(x => x.TaxReference).HasColumnName(nameof(Account.TaxReference));
+                    b.HasMany(x => x.AccountLocations).WithOne().HasForeignKey(x => x.AccountId).IsRequired().OnDelete(DeleteBehavior.Cascade);
                 });
         builder.Entity<Contact>(b =>
                 {
@@ -126,27 +127,18 @@ public static class CrmDbContextModelCreatingExtensions
                     b.Property(x => x.NationalIdentifier).HasColumnName(nameof(Contact.NationalIdentifier));
                     b.Property(x => x.DateOfBirth).HasColumnName(nameof(Contact.DateOfBirth));
                     b.HasOne<ContactState>().WithMany().IsRequired().HasForeignKey(x => x.ContactStateId).OnDelete(DeleteBehavior.NoAction);
-                    b.HasOne<ContactLevel>().WithMany().IsRequired().HasForeignKey(x => x.ContactLevelId).OnDelete(DeleteBehavior.NoAction);
-                    b.HasMany(x => x.ContactEmails).WithOne().HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
                     b.HasMany(x => x.ContactTelephones).WithOne().HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-                    b.HasMany(x => x.Accounts).WithOne().HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+                    b.HasMany(x => x.ContactEmails).WithOne().HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                    b.HasMany(x => x.ContactAccounts).WithOne().HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
                 });
-
         builder.Entity<ContactAccount>(b =>
-    {
-        b.ToTable(CrmDbProperties.DbTablePrefix + "ContactAccount", CrmDbProperties.DbSchema);
-        b.ConfigureByConvention();
-
-        b.HasKey(
-            x => new { x.ContactId, x.AccountId }
-        );
-
-        b.HasOne<Contact>().WithMany(x => x.Accounts).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-        b.HasOne<Account>().WithMany().HasForeignKey(x => x.AccountId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
-        b.HasIndex(
-                x => new { x.ContactId, x.AccountId }
-        );
-    });
+                {
+                    b.ToTable(CrmDbProperties.DbTablePrefix + "ContactAccounts", CrmDbProperties.DbSchema);
+                    b.ConfigureByConvention();
+                    b.Property(x => x.TenantId).HasColumnName(nameof(ContactAccount.TenantId));
+                    b.HasOne<Account>().WithMany().IsRequired().HasForeignKey(x => x.AccountId).OnDelete(DeleteBehavior.NoAction);
+                    b.HasOne<ContactLevel>().WithMany().IsRequired().HasForeignKey(x => x.ContactLevelId).OnDelete(DeleteBehavior.NoAction);
+                    b.HasOne<Contact>().WithMany(x => x.ContactAccounts).HasForeignKey(x => x.ContactId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                });
     }
 }

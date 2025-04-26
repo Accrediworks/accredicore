@@ -49,6 +49,11 @@ public class CrmPermissionDefinitionProvider : PermissionDefinitionProvider
         contactLevelPermission.AddChild(CrmPermissions.ContactLevels.Create, L("Permission:Create"));
         contactLevelPermission.AddChild(CrmPermissions.ContactLevels.Edit, L("Permission:Edit"));
         contactLevelPermission.AddChild(CrmPermissions.ContactLevels.Delete, L("Permission:Delete"));
+
+        var contactAccountPermission = myGroup.AddPermission(CrmPermissions.ContactAccounts.Default, L("Permission:ContactAccounts"));
+        contactAccountPermission.AddChild(CrmPermissions.ContactAccounts.Create, L("Permission:Create"));
+        contactAccountPermission.AddChild(CrmPermissions.ContactAccounts.Edit, L("Permission:Edit"));
+        contactAccountPermission.AddChild(CrmPermissions.ContactAccounts.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

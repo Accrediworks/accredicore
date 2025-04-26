@@ -17,6 +17,7 @@ using Volo.Abp.OpenIddict;
 using Volo.CmsKit;
 using Volo.Chat;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -39,6 +40,7 @@ namespace Accredi;
     typeof(AbpFeatureManagementHttpApiModule)
     )]
 [DependsOn(typeof(CrmHttpApiModule))]
+    [DependsOn(typeof(QualificationHttpApiModule))]
     public class AccrediHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

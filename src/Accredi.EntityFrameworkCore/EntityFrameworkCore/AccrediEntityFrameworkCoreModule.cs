@@ -22,6 +22,7 @@ using Volo.CmsKit.EntityFrameworkCore;
 using Volo.Chat.EntityFrameworkCore;
 using Volo.Abp.Studio;
 using Accredi.Crm.EntityFrameworkCore;
+using Accredi.Qualification.EntityFrameworkCore;
 
 namespace Accredi.EntityFrameworkCore;
 
@@ -45,7 +46,8 @@ namespace Accredi.EntityFrameworkCore;
     typeof(BlobStoringDatabaseEntityFrameworkCoreModule)
     )]
 [DependsOn(typeof(CrmEntityFrameworkCoreModule))]
-public class AccrediEntityFrameworkCoreModule : AbpModule
+[DependsOn(typeof(QualificationEntityFrameworkCoreModule))]
+    public class AccrediEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Accredi.Domain.Shared\Accredi.Domain.Shared.csproj" />
-  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.Application.Contracts\Accredi.Crm.Application.Contracts.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.Application.Contracts\Accredi.Crm.Application.Contracts.csproj" /><ProjectReference Include="..\..\modules\Accredi.Qualification\src\Accredi.Qualification.Application.Contracts\Accredi.Qualification.Application.Contracts.csproj" /></ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="9.1.1" />

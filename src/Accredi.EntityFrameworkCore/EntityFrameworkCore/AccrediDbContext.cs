@@ -24,6 +24,7 @@ using Volo.Saas.Tenants;
 using Volo.Abp.Gdpr;
 using Volo.CmsKit.EntityFrameworkCore;
 using Accredi.Crm.EntityFrameworkCore;
+using Accredi.Qualification.EntityFrameworkCore;
 
 namespace Accredi.EntityFrameworkCore;
 
@@ -106,5 +107,6 @@ public class AccrediDbContext :
         //});
         builder.ConfigureCrm();
 
-    }
+        builder.ConfigureQualification();
+        }
 }

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Accredi.Application.Contracts\Accredi.Application.Contracts.csproj" />
-  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.HttpApi\Accredi.Crm.HttpApi.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.HttpApi\Accredi.Crm.HttpApi.csproj" /><ProjectReference Include="..\..\modules\Accredi.Qualification\src\Accredi.Qualification.HttpApi\Accredi.Qualification.HttpApi.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="9.1.1" />

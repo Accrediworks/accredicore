@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Accredi.Domain.Shared\Accredi.Domain.Shared.csproj" />
-  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.Domain\Accredi.Crm.Domain.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.Domain\Accredi.Crm.Domain.csproj" /><ProjectReference Include="..\..\modules\Accredi.Qualification\src\Accredi.Qualification.Domain\Accredi.Qualification.Domain.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Emailing" Version="9.1.1" />

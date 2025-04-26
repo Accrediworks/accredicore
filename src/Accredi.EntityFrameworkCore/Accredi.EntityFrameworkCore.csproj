@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Accredi.Azure\Accredi.Azure.csproj" />
     <ProjectReference Include="..\Accredi.Domain\Accredi.Domain.csproj" />
-  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.EntityFrameworkCore\Accredi.Crm.EntityFrameworkCore.csproj" /></ItemGroup>
+  <ProjectReference Include="..\..\modules\Accredi.Crm\src\Accredi.Crm.EntityFrameworkCore\Accredi.Crm.EntityFrameworkCore.csproj" /><ProjectReference Include="..\..\modules\Accredi.Qualification\src\Accredi.Qualification.EntityFrameworkCore\Accredi.Qualification.EntityFrameworkCore.csproj" /></ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="9.1.1" />

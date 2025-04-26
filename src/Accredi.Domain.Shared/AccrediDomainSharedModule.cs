@@ -20,6 +20,7 @@ using Volo.Chat;
 using Volo.Abp.Gdpr;
 using Volo.CmsKit;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -41,6 +42,7 @@ namespace Accredi;
     typeof(BlobStoringDatabaseDomainSharedModule)
     )]
 [DependsOn(typeof(CrmDomainSharedModule))]
+    [DependsOn(typeof(QualificationDomainSharedModule))]
     public class AccrediDomainSharedModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

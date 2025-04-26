@@ -15,6 +15,7 @@ using Volo.Saas.Host;
 using Volo.CmsKit;
 using Volo.Chat;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -38,6 +39,7 @@ namespace Accredi;
     typeof(AbpSettingManagementApplicationModule)
     )]
 [DependsOn(typeof(CrmApplicationModule))]
+    [DependsOn(typeof(QualificationApplicationModule))]
     public class AccrediApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

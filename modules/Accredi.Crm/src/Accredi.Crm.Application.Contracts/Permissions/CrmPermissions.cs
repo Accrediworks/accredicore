@@ -74,4 +74,12 @@ public class CrmPermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public static class ContactAccounts
+    {
+        public const string Default = GroupName + ".ContactAccounts";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

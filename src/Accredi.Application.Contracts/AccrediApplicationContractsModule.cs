@@ -14,6 +14,7 @@ using Volo.CmsKit;
 using Volo.FileManagement;
     using Volo.Chat;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -36,6 +37,7 @@ namespace Accredi;
     typeof(AbpPermissionManagementApplicationContractsModule)
 )]
 [DependsOn(typeof(CrmApplicationContractsModule))]
+    [DependsOn(typeof(QualificationApplicationContractsModule))]
     public class AccrediApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)

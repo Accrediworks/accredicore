@@ -31,6 +31,7 @@
     "Enum:ContactLevelType.2": "Manager",
     "Enum:ContactLevelType.3": "Owner",
     "Permission:ContactLevels": "Contact Levels",
-    "ContactLevel": "Contact level"
+    "ContactLevel": "Contact level",
+    "Permission:ContactAccounts": "Contact Accounts"
   }
 }

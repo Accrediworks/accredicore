@@ -16,6 +16,7 @@ using Volo.Abp.OpenIddict;
 using Volo.CmsKit;
 using Volo.Chat;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -38,6 +39,7 @@ namespace Accredi;
     typeof(AbpSettingManagementHttpApiClientModule)
 )]
 [DependsOn(typeof(CrmHttpApiClientModule))]
+    [DependsOn(typeof(QualificationHttpApiClientModule))]
     public class AccrediHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";

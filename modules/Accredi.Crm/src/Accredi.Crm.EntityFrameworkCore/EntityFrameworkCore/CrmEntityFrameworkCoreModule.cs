@@ -1,3 +1,4 @@
+using Accredi.Crm.ContactAccounts;
 using Accredi.Crm.ContactLevels;
 using Accredi.Crm.ContactStates;
 using Accredi.Crm.ContactTelephones;
@@ -26,21 +27,23 @@ public class CrmEntityFrameworkCoreModule : AbpModule
              * options.AddRepository<Question, EfCoreQuestionRepository>();
              */
 
-            options.AddRepository<Account, Accounts.EfCoreAccountRepository>();
-
-            options.AddRepository<AccountLocation, AccountLocations.EfCoreAccountLocationRepository>();
-
             options.AddRepository<Country, Countries.EfCoreCountryRepository>();
+
+            options.AddRepository<ContactState, ContactStates.EfCoreContactStateRepository>();
+
+            options.AddRepository<ContactTelephone, ContactTelephones.EfCoreContactTelephoneRepository>();
 
             options.AddRepository<Contact, Contacts.EfCoreContactRepository>();
 
             options.AddRepository<ContactEmail, ContactEmails.EfCoreContactEmailRepository>();
 
-            options.AddRepository<ContactTelephone, ContactTelephones.EfCoreContactTelephoneRepository>();
-
-            options.AddRepository<ContactState, ContactStates.EfCoreContactStateRepository>();
-
             options.AddRepository<ContactLevel, ContactLevels.EfCoreContactLevelRepository>();
+
+            options.AddRepository<AccountLocation, AccountLocations.EfCoreAccountLocationRepository>();
+
+            options.AddRepository<Account, Accounts.EfCoreAccountRepository>();
+
+            options.AddRepository<ContactAccount, ContactAccounts.EfCoreContactAccountRepository>();
 
         });
     }

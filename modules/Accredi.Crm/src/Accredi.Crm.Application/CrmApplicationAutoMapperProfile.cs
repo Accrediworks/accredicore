@@ -1,3 +1,4 @@
+using Accredi.Crm.ContactAccounts;
 using Accredi.Crm.ContactLevels;
 using Accredi.Crm.ContactStates;
 using Accredi.Crm.ContactTelephones;
@@ -21,31 +22,30 @@ public class CrmApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
 
-        CreateMap<Account, AccountDto>();
-
-        CreateMap<AccountLocation, AccountLocationDto>();
-
         CreateMap<Country, CountryDto>();
-
-        CreateMap<AccountLocationWithNavigationProperties, AccountLocationWithNavigationPropertiesDto>();
-        CreateMap<Country, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
-
-        CreateMap<Contact, ContactDto>();
-        CreateMap<ContactWithNavigationProperties, ContactWithNavigationPropertiesDto>();
-        CreateMap<Account, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
-
-        CreateMap<ContactEmail, ContactEmailDto>();
-
-        CreateMap<ContactTelephone, ContactTelephoneDto>();
-
-        CreateMap<Contact, ContactDto>().Ignore(x => x.ContactEmails).Ignore(x => x.ContactTelephones);
 
         CreateMap<ContactState, ContactStateDto>();
 
+        CreateMap<ContactTelephone, ContactTelephoneDto>();
+
+        CreateMap<ContactWithNavigationProperties, ContactWithNavigationPropertiesDto>();
         CreateMap<ContactState, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
+
+        CreateMap<ContactEmail, ContactEmailDto>();
+
+        CreateMap<Contact, ContactDto>().Ignore(x => x.ContactTelephones).Ignore(x => x.ContactEmails);
 
         CreateMap<ContactLevel, ContactLevelDto>();
 
+        CreateMap<AccountLocation, AccountLocationDto>();
+        CreateMap<AccountLocationWithNavigationProperties, AccountLocationWithNavigationPropertiesDto>();
+        CreateMap<Country, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
+
+        CreateMap<Account, AccountDto>().Ignore(x => x.AccountLocations);
+
+        CreateMap<ContactAccount, ContactAccountDto>();
+        CreateMap<ContactAccountWithNavigationProperties, ContactAccountWithNavigationPropertiesDto>();
+        CreateMap<Account, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
         CreateMap<ContactLevel, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
     }
 }

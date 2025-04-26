@@ -27,6 +27,7 @@ using Volo.CmsKit;
 using Volo.CmsKit.Contact;
 using Volo.CmsKit.Newsletters;
 using Accredi.Crm;
+using Accredi.Qualification;
 
 namespace Accredi;
 
@@ -53,6 +54,7 @@ namespace Accredi;
     typeof(BlobStoringDatabaseDomainModule)
     )]
 [DependsOn(typeof(CrmDomainModule))]
+    [DependsOn(typeof(QualificationDomainModule))]
     public class AccrediDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

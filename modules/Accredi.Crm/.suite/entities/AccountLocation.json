@@ -411,7 +411,26 @@
             "OrdinalIndex": 0
           }
         ],
-        "NavigationProperties": [],
+        "NavigationProperties": [
+          {
+            "EntityNameWithDuplicationNumber": "Country",
+            "EntitySetNameWithDuplicationNumber": "Countries",
+            "ReferencePropertyName": "Country",
+            "UiPickType": "Dropdown",
+            "IsRequired": true,
+            "IncludeEntitiesFromModules": false,
+            "FromAbpModule": false,
+            "Name": "CountryId",
+            "DisplayProperty": "Name",
+            "Namespace": "Accredi.Crm.Countries",
+            "EntityName": "Country",
+            "EntitySetName": "Countries",
+            "DtoNamespace": "Accredi.Crm.Countries",
+            "DtoEntityName": "CountryDto",
+            "Type": "Guid",
+            "IsFilterable": true
+          }
+        ],
         "NavigationConnections": [],
         "ChildEntities": [],
         "PhysicalFileName": "AccountLocation.json"
