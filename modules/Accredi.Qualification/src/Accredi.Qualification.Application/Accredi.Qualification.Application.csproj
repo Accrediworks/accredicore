@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Accredi.Qualification</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.1.1" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.1.1" />
+    <ProjectReference Include="..\Accredi.Qualification.Application.Contracts\Accredi.Qualification.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Accredi.Qualification.Domain\Accredi.Qualification.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Accredi.Qualification</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Accredi.Qualification.Domain\Accredi.Qualification.Domain.csproj" />
+    <ProjectReference Include="..\Accredi.Qualification.TestBase\Accredi.Qualification.TestBase.csproj" />
+  </ItemGroup>
+
+</Project>
