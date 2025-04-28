@@ -272,5 +272,3 @@ src/Accredi.Blazor.Server.Tiered/Logs/*
 # IdentityServer temp files
 tempkey.rsa
 tempkey.jwk
-
-appsettings.secrets.json
