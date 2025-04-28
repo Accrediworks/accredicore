@@ -51,8 +51,8 @@ jobs:
     needs: build-solution
     with:
       service_name: web
-      project_path: src/Accredi.Web
-      dockerfile_path: src/Accredi.Web/Dockerfile
+      project_path: src/Accredi.Web.Portal
+      dockerfile_path: src/Accredi.Web.Portal/Dockerfile
       nuget_source: https://nuget.pkg.github.com/AccrediWorks/index.json
       version_number: ${{ needs.build-solution.outputs.version_number }}
     secrets: inherit
