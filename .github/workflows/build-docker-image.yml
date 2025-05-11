@@ -46,6 +46,10 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Who am I (debug)
+        run: |
+          az account show
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
