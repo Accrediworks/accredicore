@@ -16,7 +16,11 @@ on:
     secrets: 
       AZURE_REGISTRY_URL:
         required: true
-        
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_CLIENT_SECRET:
+        required: true
+    
     outputs:
       version_number:
         description: "Version number of the published service"
@@ -38,22 +42,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}-publish
-          
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Who am I (debug)
-        run: |
-          az account show
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.AZURE_REGISTRY_URL }}
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Docker meta
         id: meta
