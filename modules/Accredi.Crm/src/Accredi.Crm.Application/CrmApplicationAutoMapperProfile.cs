@@ -33,7 +33,7 @@ public class CrmApplicationAutoMapperProfile : Profile
 
         CreateMap<ContactEmail, ContactEmailDto>();
 
-        CreateMap<Contact, ContactDto>().Ignore(x => x.ContactTelephones).Ignore(x => x.ContactEmails);
+        CreateMap<Contact, ContactDto>().Ignore(x => x.ContactTelephones).Ignore(x => x.ContactEmails).Ignore(x=>x.ContactAccounts);
 
         CreateMap<ContactLevel, ContactLevelDto>();
 
