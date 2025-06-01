@@ -12,22 +12,21 @@ on:
       version_number:
         required: true
         type: string
-    outputs:
-      version_number:
-        description: "Version number of the published service"
-        value: ${{ jobs.build-and-push.outputs.version_number }}
+        
+    secrets: 
+      AZURE_REGISTRY_URL:
+        required: true
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_CLIENT_SECRET:
+        required: true
 
 jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    outputs:
-      version_number: ${{ steps.version.outputs.version }}
 
     steps:
-      - name: Pass version number to next job
-        id: version
-        run: echo "version=${{ inputs.version_number || '0.0.0' }}" >> $GITHUB_OUTPUT
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -38,8 +37,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.AZURE_REGISTRY_URL }}
-          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Docker meta
         id: meta
